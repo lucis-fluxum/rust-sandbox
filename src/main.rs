@@ -1,37 +1,19 @@
-extern crate rand;
-
-use std::io;
-use std::cmp::Ordering;
-use rand::Rng;
-
 fn main() {
-    println!("Guess the number!");
-    let secret_num = rand::thread_rng().gen_range(0, 100) + 1;
+    let x = fib(90) as f64;
+    let y = fib(91) as f64; // Beyond 91 gives an overflow!
+    println!("phi: {:.20}", y / x);
+}
 
-    // println!("The secret number is {}", secret_num);
+fn fib(n: i32) -> i64 {
+    let mut a = 0;
+    let mut b = 1;
+    let mut sum = 0;
 
-    loop {
-        println!("Enter a guess: ");
-
-        let mut guess = String::new();
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
-
-        let guess: u32 = match guess.trim().parse() {
-            Ok(num) => num,
-            Err(_) => continue,
-        };
-
-        print!("{} is ", guess);
-
-        match guess.cmp(&secret_num) {
-            Ordering::Less => println!("too small."),
-            Ordering::Greater => println!("too big."),
-            Ordering::Equal => {
-                println!("correct!");
-                break;
-            }
-        }
+    for i in 0..n {
+        sum = a + b;
+        a = b;
+        b = sum;
     }
+
+    sum
 }
