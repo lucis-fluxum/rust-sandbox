@@ -1,18 +1,20 @@
 use std::collections::HashMap;
-use std::fs::File;
-use std::io::Read;
+use std::io;
 
 fn main() {
-    if let Ok(mut f) = File::open("words.txt") {
-        let mut buf = String::new();
-        f.read_to_string(&mut buf);
-        let mut word_counts: HashMap<String, i32> = HashMap::new();
-        for word in buf.split_whitespace() {
-            let count = word_counts.entry(String::from(word)).or_insert(0);
-            *count += 1;
-        }
-        println!("{:?}", word_counts);
-    } else {
-        println!("Couldn't open words.txt");
+    let mut roles = HashMap::new();
+
+    let mut buffer = String::new();
+    io::stdin().read_line(&mut buffer).expect("Nope");
+
+    for entry in buffer.split(',') {
+        let mut parts_iterator = entry.split(':')
+            .map(str::trim)
+            .map(str::to_string);
+
+        roles.insert(parts_iterator.next().unwrap(),
+                     parts_iterator.next().unwrap());
     }
+
+    println!("{:#?}", roles);
 }
