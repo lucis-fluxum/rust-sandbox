@@ -1,19 +1,18 @@
+use std::collections::HashMap;
+use std::fs::File;
+use std::io::Read;
+
 fn main() {
-    let x = fib(90) as f64;
-    let y = fib(91) as f64; // Beyond 91 gives an overflow!
-    println!("phi: {:.20}", y / x);
-}
-
-fn fib(n: i32) -> i64 {
-    let mut a = 0;
-    let mut b = 1;
-    let mut sum = 0;
-
-    for i in 0..n {
-        sum = a + b;
-        a = b;
-        b = sum;
+    if let Ok(mut f) = File::open("words.txt") {
+        let mut buf = String::new();
+        f.read_to_string(&mut buf);
+        let mut word_counts: HashMap<String, i32> = HashMap::new();
+        for word in buf.split_whitespace() {
+            let count = word_counts.entry(String::from(word)).or_insert(0);
+            *count += 1;
+        }
+        println!("{:?}", word_counts);
+    } else {
+        println!("Couldn't open words.txt");
     }
-
-    sum
 }
