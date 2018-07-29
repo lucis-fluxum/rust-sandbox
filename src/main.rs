@@ -1,3 +1,5 @@
+#![warn(rust_2018_idioms)]
+
 trait SpicyMeatball {
     fn get_msg(&self) -> String;
 }
